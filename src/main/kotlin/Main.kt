@@ -1,36 +1,32 @@
 import strategy.*
 
 fun main(args: Array<String>) {
+    testStrategyPattern()
+}
 
-    //GameObjectNoPattern
+fun testStrategyPattern() {
     println("GameObjectNoPattern")
-    val talkCharacterNoPattern = TalkObject()
-    talkCharacterNoPattern.interact()
+    val npc = NPGameObjectNPC()
+    npc.interact()
 
-    val attackCharacterNoPattern = AttackObject()
-    attackCharacterNoPattern.interact()
+    val enemy = NPGameObjectEnemy()
+    enemy.interact()
+    println()
 
     println("GameObjectNoPattern2")
-    //GameObjectNoPattern2
-    val talkCharacterNoPattern2 = GameObjectNoPattern2()
-    val talkInteract = TalkInterface()
-    talkCharacterNoPattern2.interact = talkInteract
-    talkCharacterNoPattern2.interact.interact()
+    val npc2 = NP2GameObjectNPC()
+    npc2.interact()
 
-    val attackInterface = AttackInterface()
-    talkCharacterNoPattern2.interact = attackInterface
-    talkCharacterNoPattern2.interact.interact()
-
+    val enemy2 = NP2GameObjectEnemy()
+    enemy2.interact()
+    println()
 
     println("GameObject Strategy Pattern")
-    val attackCharacterNoPattern2 = AttackObject()
-    attackCharacterNoPattern.interact()
+    val rock: GameObject = AnyObjectCanBe()
 
-    val character: GameObject = strategy.NPC()
+    rock.setInterfaceStrategy(TalkInteractStrategy())
+    rock.performInteract()
 
-    character.setInterfaceStrategy(TalkInteractStrategy())
-    character.performInteract()
-
-    character.setInterfaceStrategy(AttackInteractStrategy())
-    character.performInteract()
+    rock.setInterfaceStrategy(AttackInteractStrategy())
+    rock.performInteract()
 }

@@ -1,4 +1,4 @@
 package strategy
 
-class GameObjectData {
+data class GameObjectData(val name: String) {
 }

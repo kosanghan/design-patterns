@@ -2,7 +2,9 @@ package strategy
 
 abstract class GameObject {
 
-    private lateinit var interactStrategy: InteractStrategy
+    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.canonicalName)
+
+    protected lateinit var interactStrategy: InteractStrategy
 
     fun setInterfaceStrategy(interactStrategy: InteractStrategy) {
         this.interactStrategy = interactStrategy
@@ -10,7 +12,7 @@ abstract class GameObject {
 
     fun performInteract() {
         try {
-            interactStrategy.interact()
+            interactStrategy.interact(gameObjectData)
         } catch (e: UninitializedPropertyAccessException) {
             println("nothing happened")
         }
@@ -18,23 +20,26 @@ abstract class GameObject {
 }
 
 interface InteractStrategy {
-    fun interact()
+    fun interact(gameObjectData: GameObjectData)
 }
 
 class TalkInteractStrategy : InteractStrategy {
-    override fun interact() {
-        println("\"Nice to meet you!\"")
+    override fun interact(gameObjectData: GameObjectData) {
+        println("[${gameObjectData.name}]:\"Nice to meet you!\"")
     }
 }
 
 class AttackInteractStrategy : InteractStrategy {
-    override fun interact() {
-        println("you attacked by character")
+    override fun interact(gameObjectData: GameObjectData) {
+        println("you attacked by [${gameObjectData.name}]")
     }
 }
 
-class NPC : GameObject() {
-
+class AnyObjectCanBe : GameObject() {
 }
 
-
+class TalkObject : GameObject() {
+    init {
+        interactStrategy = TalkInteractStrategy()
+    }
+}

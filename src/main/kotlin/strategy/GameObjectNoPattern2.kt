@@ -1,28 +1,36 @@
 package strategy
 
-class GameObjectNoPattern2 {
-    lateinit var interact: Interact
-    lateinit var gameObjectData: GameObjectData
+open class GameObjectNoPattern2 {
+    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.simpleName)
+    fun getObjectInfo() {
+        println("this is ${gameObjectData}")
+    }
+
 }
 
 interface Interact {
     fun interact()
 }
 
-class TalkInterface : Interact {
+interface Interact2{
+    fun interact2()
+}
+
+class NP2GameObjectNPC : GameObjectNoPattern2(), Interact, Interact2 {
     override fun interact() {
-        println("\"Nice to meet you!\"")
+        println("[${gameObjectData.name}]:\"Nice to meet you!\"")
+    }
+
+    override fun interact2() {
+        TODO("Not yet implemented")
     }
 }
 
-class AttackInterface : Interact {
+class NP2GameObjectEnemy : GameObjectNoPattern2(), Interact {
     override fun interact() {
-        println("you attacked by character")
+        println("you attacked by [${gameObjectData.name}]")
     }
 }
 
-class InactiveInterface : Interact {
-    override fun interact() {
-        //do nothing
-    }
+class NP2GameObjectRock : GameObjectNoPattern2() {
 }

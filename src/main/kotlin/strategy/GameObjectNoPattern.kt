@@ -2,22 +2,25 @@ package strategy
 
 abstract class GameObjectNoPattern {
     abstract fun interact()
-    lateinit var gameObjectData: GameObjectData
-}
-
-class TalkObject : GameObjectNoPattern() {
-    override fun interact() {
-        println("\"Nice to meet you!\"")
+    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.simpleName)
+    fun getObjectInfo() {
+        println("this is ${gameObjectData}")
     }
 }
 
-class AttackObject : GameObjectNoPattern() {
+class NPGameObjectNPC : GameObjectNoPattern() {
     override fun interact() {
-        println("you attacked by character")
+        println("[${gameObjectData.name}]:\"Nice to meet you!\"")
     }
 }
 
-class InactiveObject : GameObjectNoPattern() {
+class NPGameObjectEnemy : GameObjectNoPattern() {
+    override fun interact() {
+        println("you attacked by [${gameObjectData.name}]")
+    }
+}
+
+class NPObjectRock : GameObjectNoPattern() {
     override fun interact() {
         //do nothing
     }
