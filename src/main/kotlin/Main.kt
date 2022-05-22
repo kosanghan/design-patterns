@@ -22,11 +22,11 @@ fun testStrategyPattern() {
     println()
 
     println("GameObject Strategy Pattern")
-    val rock: GameObject = AnyObjectCanBe()
+    val npc3: GameObject = AnyObjectCanBe()
 
-    rock.setInterfaceStrategy(TalkInteractStrategy())
-    rock.performInteract()
+    npc3.setInterfaceStrategy(TalkInteractStrategy())
+    npc3.performInteract()
 
-    rock.setInterfaceStrategy(AttackInteractStrategy())
-    rock.performInteract()
+    npc3.setInterfaceStrategy(AttackInteractStrategy())
+    npc3.performInteract()
 }
