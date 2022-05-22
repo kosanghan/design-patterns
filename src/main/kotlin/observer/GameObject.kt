@@ -1,6 +1,6 @@
 package observer
 
-import util.toBoolean
+import util.DayNight
 
 abstract class GameObject {
 
@@ -13,11 +13,23 @@ abstract class GameObject {
         this.interactStrategy = interactStrategy
     }
 
+    fun setSystemObjectDataReceiver(systemObjectDataReceiver: SystemObjectDataReceiver) {
+        this.systemObjectDataReceiver = systemObjectDataReceiver
+    }
+
     fun performInteract() {
         try {
             interactStrategy.interact(gameObjectData)
         } catch (e: UninitializedPropertyAccessException) {
-            println("nothing happened")
+            println("you cannot interface with this object")
+        }
+    }
+
+    fun performSystemDataReceive(dayOrNight: DayNight) {
+        try {
+            systemObjectDataReceiver.receiveDayOrNight(dayOrNight)
+        } catch (e: UninitializedPropertyAccessException) {
+            println("this object does not have system object data receiver")
         }
     }
 }
@@ -39,7 +51,14 @@ class AttackInteractStrategy : InteractStrategy {
 }
 
 class VampireNPC : GameObject(), SystemObjectDataReceiver {
-    override fun receiveDayOrNight(dayOrNight: Int) {
-        setInterfaceStrategy(if (dayOrNight.toBoolean()) TalkInteractStrategy() else AttackInteractStrategy())
+    init {
+        setSystemObjectDataReceiver(this)
     }
+    override fun receiveDayOrNight(dayOrNight: DayNight) {
+        setInterfaceStrategy(if (dayOrNight == DayNight.DAY) TalkInteractStrategy() else AttackInteractStrategy())
+    }
+}
+
+class OtherNPC : GameObject(){
+
 }

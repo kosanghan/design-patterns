@@ -1,7 +1,11 @@
+import observer.OtherNPC
+import observer.SystemObject
+import observer.VampireNPC
 import strategy.*
 
 fun main(args: Array<String>) {
-    testStrategyPattern()
+//    testStrategyPattern()
+    testObserverPattern()
 }
 
 fun testStrategyPattern() {
@@ -29,4 +33,38 @@ fun testStrategyPattern() {
 
     npc3.setInterfaceStrategy(AttackInteractStrategy())
     npc3.performInteract()
+}
+
+fun testObserverPattern() {
+    println("GameObject Strategy Pattern")
+    val systemObject = SystemObject()
+    val vampire = VampireNPC()
+
+    println()
+    println("register vampire to system object")
+    systemObject.registGameObject(vampire)
+    vampire.performInteract()
+
+    println()
+    println("day night changed")
+    systemObject.changeDayNight()
+    vampire.performInteract()
+
+    println()
+    println("day night changed")
+    systemObject.changeDayNight()
+    vampire.performInteract()
+
+    println()
+    println("unregister vampire from system object")
+    systemObject.unregistGameObject(vampire)
+    systemObject.changeDayNight()
+    vampire.performInteract()
+
+    println()
+    println("registered other object not using observer pattern")
+    val normal = OtherNPC()
+    systemObject.registGameObject(normal)
+    systemObject.changeDayNight()
+    normal.performInteract()
 }
