@@ -1,4 +1,3 @@
 package observer
 
-data class GameObjectData(val name: String) {
-}
+data class GameObjectData(val name: String)

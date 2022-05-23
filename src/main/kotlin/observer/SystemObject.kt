@@ -3,10 +3,6 @@ package observer
 import util.DayNight
 import java.time.LocalDateTime
 
-interface SystemObjectDataReceiver {
-    fun receiveDayOrNight(dayOrNight: DayNight)
-}
-
 class SystemObject {
 
     private var gameObjectList = ArrayList<GameObject>()
@@ -22,12 +18,12 @@ class SystemObject {
         notifyDayNightChanged()
     }
 
-    fun registGameObject(gameObject: GameObject) {
+    fun registerGameObject(gameObject: GameObject) {
         gameObjectList.add(gameObject)
         notifyDayNightChanged()
     }
 
-    fun unregistGameObject(gameObject: GameObject) {
+    fun unregisterGameObject(gameObject: GameObject) {
         gameObjectList.remove(gameObject)
     }
 

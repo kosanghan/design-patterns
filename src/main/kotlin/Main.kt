@@ -42,7 +42,7 @@ fun testObserverPattern() {
 
     println()
     println("register vampire to system object")
-    systemObject.registGameObject(vampire)
+    systemObject.registerGameObject(vampire)
     vampire.performInteract()
 
     println()
@@ -57,14 +57,14 @@ fun testObserverPattern() {
 
     println()
     println("unregister vampire from system object")
-    systemObject.unregistGameObject(vampire)
+    systemObject.unregisterGameObject(vampire)
     systemObject.changeDayNight()
     vampire.performInteract()
 
     println()
     println("registered other object not using observer pattern")
     val normal = OtherNPC()
-    systemObject.registGameObject(normal)
+    systemObject.registerGameObject(normal)
     systemObject.changeDayNight()
     normal.performInteract()
 }

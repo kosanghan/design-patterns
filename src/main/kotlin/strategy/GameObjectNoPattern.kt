@@ -3,9 +3,6 @@ package strategy
 abstract class GameObjectNoPattern {
     abstract fun interact()
     var gameObjectData: GameObjectData = GameObjectData(this.javaClass.simpleName)
-    fun getObjectInfo() {
-        println("this is ${gameObjectData}")
-    }
 }
 
 class NPGameObjectNPC : GameObjectNoPattern() {

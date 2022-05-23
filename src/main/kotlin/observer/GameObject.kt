@@ -4,7 +4,7 @@ import util.DayNight
 
 abstract class GameObject {
 
-    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.canonicalName)
+    private var gameObjectData: GameObjectData = GameObjectData(this.javaClass.canonicalName)
 
     private lateinit var interactStrategy: InteractStrategy
     private lateinit var systemObjectDataReceiver: SystemObjectDataReceiver
@@ -50,15 +50,18 @@ class AttackInteractStrategy : InteractStrategy {
     }
 }
 
+interface SystemObjectDataReceiver {
+    fun receiveDayOrNight(dayOrNight: DayNight)
+}
+
 class VampireNPC : GameObject(), SystemObjectDataReceiver {
     init {
         setSystemObjectDataReceiver(this)
     }
+
     override fun receiveDayOrNight(dayOrNight: DayNight) {
         setInterfaceStrategy(if (dayOrNight == DayNight.DAY) TalkInteractStrategy() else AttackInteractStrategy())
     }
 }
 
-class OtherNPC : GameObject(){
-
-}
+class OtherNPC : GameObject()
