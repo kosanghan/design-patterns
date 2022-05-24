@@ -60,7 +60,6 @@ class VampireNPC() : GameObject(), SystemObjectDataReceiverPull {
 
     constructor(systemObject: SystemObject) : this() {
         this.systemObject = systemObject
-        this.systemObject.registerObserver(this)
     }
 
     init {
