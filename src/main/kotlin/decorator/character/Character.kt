@@ -14,7 +14,7 @@ interface CharacterFactory {
     fun createCharacter(characterType: CharacterType): Character
 }
 
-class NormalCharacterFactory : CharacterFactory {
+object NormalCharacterFactory : CharacterFactory {
     override fun createCharacter(characterType: CharacterType): Character {
         return when (characterType) {
             CharacterType.NORMAL -> NormalCharacter()
@@ -26,10 +26,23 @@ class NormalCharacterFactory : CharacterFactory {
     }
 }
 
-abstract class Character : GameObject(), SystemObjectDataReceiver {
+abstract class Character : GameObject() {
     protected lateinit var characterProperty: CharacterProperty
-    protected val weaponList: List<Weapon> = ArrayList<Weapon>()
-    protected val powerUpList: List<PowerUp> = ArrayList<PowerUp>()
+    private val weaponList: List<Weapon> = ArrayList<Weapon>()
+    private val powerUpList: List<PowerUp> = ArrayList<PowerUp>()
+
+    fun attack() {
+        weaponList.forEach {
+            it.performAttack()
+        }
+    }
+
+    init {
+        println("${gameObjectData.name} created")
+        println("status : ${characterProperty.toString()}")
+        println("weapons : ${weaponList}")
+        println("powerUps : ${powerUpList}")
+    }
 }
 
 data class CharacterProperty constructor(
@@ -44,15 +57,12 @@ data class CharacterProperty constructor(
 class NormalCharacter : Character() {
 
     init {
-        characterProperty = CharacterProperty(0, 0, 0, 0, 0, 0)
+        this.characterProperty = CharacterProperty(0, 0, 0, 0, 0, 0)
     }
 
-    override fun receiveDayOrNight(dayOrNight: DayNight) {
-        // do nothing
-    }
 }
 
-class VampireCharacter : Character() {
+class VampireCharacter : Character(), SystemObjectDataReceiver {
 
     init {
         characterProperty = CharacterProperty(10, 10, 10, 10, 10, 10)

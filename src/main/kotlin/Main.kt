@@ -1,3 +1,5 @@
+import decorator.character.CharacterType
+import decorator.character.NormalCharacterFactory
 import observer.OtherNPC
 import observer.SystemObject
 import observer.VampireNPC
@@ -5,7 +7,8 @@ import strategy.*
 
 fun main(args: Array<String>) {
 //    testStrategyPattern()
-    testObserverPattern()
+//    testObserverPattern()
+    testDecoratorPattern()
 }
 
 fun testStrategyPattern() {
@@ -68,4 +71,8 @@ fun testObserverPattern() {
     systemObject.registerObserver(normal)
     systemObject.changeDayNight()
     normal.performInteract()
+}
+
+fun testDecoratorPattern() {
+    val character = NormalCharacterFactory.createCharacter(CharacterType.NORMAL)
 }
