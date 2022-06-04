@@ -38,11 +38,12 @@ fun testStrategyPattern() {
 fun testObserverPattern() {
     println("GameObject Strategy Pattern")
     val systemObject = SystemObject()
-    val vampire = VampireNPC()
+    var vampire = VampireNPC()
+    vampire = VampireNPC(systemObject)
 
     println()
     println("register vampire to system object")
-    systemObject.registGameObject(vampire)
+    systemObject.registerObserver(vampire)
     vampire.performInteract()
 
     println()
@@ -57,14 +58,14 @@ fun testObserverPattern() {
 
     println()
     println("unregister vampire from system object")
-    systemObject.unregistGameObject(vampire)
+    systemObject.removeObserver(vampire)
     systemObject.changeDayNight()
     vampire.performInteract()
 
     println()
     println("registered other object not using observer pattern")
     val normal = OtherNPC()
-    systemObject.registGameObject(normal)
+    systemObject.registerObserver(normal)
     systemObject.changeDayNight()
     normal.performInteract()
 }

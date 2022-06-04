@@ -2,9 +2,9 @@ package strategy
 
 abstract class GameObject {
 
-    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.canonicalName)
+    private var gameObjectData: GameObjectData = GameObjectData(this.javaClass.canonicalName)
 
-    protected lateinit var interactStrategy: InteractStrategy
+    private lateinit var interactStrategy: InteractStrategy
 
     fun setInterfaceStrategy(interactStrategy: InteractStrategy) {
         this.interactStrategy = interactStrategy
@@ -35,11 +35,4 @@ class AttackInteractStrategy : InteractStrategy {
     }
 }
 
-class AnyObjectCanBe : GameObject() {
-}
-
-class TalkObject : GameObject() {
-    init {
-        interactStrategy = TalkInteractStrategy()
-    }
-}
+class AnyObjectCanBe : GameObject()

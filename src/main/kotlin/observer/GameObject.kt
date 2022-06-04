@@ -4,17 +4,17 @@ import util.DayNight
 
 abstract class GameObject {
 
-    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.canonicalName)
+    private var gameObjectData: GameObjectData = GameObjectData(this.javaClass.canonicalName)
 
     private lateinit var interactStrategy: InteractStrategy
-    private lateinit var systemObjectDataReceiver: SystemObjectDataReceiver
+    private lateinit var systemObjectDataReceiverPull: SystemObjectDataReceiverPull
 
     fun setInterfaceStrategy(interactStrategy: InteractStrategy) {
         this.interactStrategy = interactStrategy
     }
 
-    fun setSystemObjectDataReceiver(systemObjectDataReceiver: SystemObjectDataReceiver) {
-        this.systemObjectDataReceiver = systemObjectDataReceiver
+    fun setSystemObjectDataReceiverPull(systemObjectDataReceiverPull: SystemObjectDataReceiverPull) {
+        this.systemObjectDataReceiverPull = systemObjectDataReceiverPull
     }
 
     fun performInteract() {
@@ -25,11 +25,11 @@ abstract class GameObject {
         }
     }
 
-    fun performSystemDataReceive(dayOrNight: DayNight) {
+    fun performSystemDataReceive() {
         try {
-            systemObjectDataReceiver.receiveDayOrNight(dayOrNight)
+            systemObjectDataReceiverPull.receiveDayOrNight()
         } catch (e: UninitializedPropertyAccessException) {
-            println("this object does not have system object data receiver")
+            println("this object does not have system object data pull receiver")
         }
     }
 }
@@ -50,15 +50,25 @@ class AttackInteractStrategy : InteractStrategy {
     }
 }
 
-class VampireNPC : GameObject(), SystemObjectDataReceiver {
+interface SystemObjectDataReceiverPull {
+    fun receiveDayOrNight()
+}
+
+class VampireNPC() : GameObject(), SystemObjectDataReceiverPull {
+
+    private lateinit var systemObject: SystemObject
+
+    constructor(systemObject: SystemObject) : this() {
+        this.systemObject = systemObject
+    }
+
     init {
-        setSystemObjectDataReceiver(this)
+        setSystemObjectDataReceiverPull(this)
     }
-    override fun receiveDayOrNight(dayOrNight: DayNight) {
-        setInterfaceStrategy(if (dayOrNight == DayNight.DAY) TalkInteractStrategy() else AttackInteractStrategy())
+
+    override fun receiveDayOrNight() {
+        setInterfaceStrategy(if (systemObject.getDayOrNight() == DayNight.DAY) TalkInteractStrategy() else AttackInteractStrategy())
     }
 }
 
-class OtherNPC : GameObject(){
-
-}
+class OtherNPC : GameObject()

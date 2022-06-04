@@ -2,9 +2,6 @@ package strategy
 
 open class GameObjectNoPattern2 {
     var gameObjectData: GameObjectData = GameObjectData(this.javaClass.simpleName)
-    fun getObjectInfo() {
-        println("this is ${gameObjectData}")
-    }
 
 }
 
@@ -32,5 +29,4 @@ class NP2GameObjectEnemy : GameObjectNoPattern2(), Interact {
     }
 }
 
-class NP2GameObjectRock : GameObjectNoPattern2() {
-}
+class NP2GameObjectRock : GameObjectNoPattern2()
