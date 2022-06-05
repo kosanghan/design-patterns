@@ -5,7 +5,7 @@ import util.DayNight
 
 abstract class GameObject {
 
-    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.canonicalName)
+    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.simpleName)
 
     private lateinit var interactStrategy: InteractStrategy
     private lateinit var systemObjectDataReceiver: SystemObjectDataReceiver

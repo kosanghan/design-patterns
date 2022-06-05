@@ -1,5 +1,7 @@
+import decorator.character.BaseCharacterFactory
 import decorator.character.CharacterType
-import decorator.character.NormalCharacterFactory
+import decorator.weapon.Garlic
+import decorator.weapon.Knife
 import observer.OtherNPC
 import observer.SystemObject
 import observer.VampireNPC
@@ -74,5 +76,10 @@ fun testObserverPattern() {
 }
 
 fun testDecoratorPattern() {
-    val character = NormalCharacterFactory.createCharacter(CharacterType.NORMAL)
+    val character = BaseCharacterFactory.createCharacter(CharacterType.NORMAL)
+    character.addWeapon(Knife())
+    character.addWeapon(Garlic())
+
+    character.attack()
+    character.performInteract()
 }

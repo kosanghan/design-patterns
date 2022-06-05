@@ -2,8 +2,8 @@ package decorator.character
 
 import decorator.GameObject
 import decorator.system.SystemObjectDataReceiver
-import decorator.weapon.PowerUp
-import decorator.weapon.Weapon
+import decorator.weapon.BasePowerUp
+import decorator.weapon.BaseWeapon
 import util.DayNight
 
 enum class CharacterType {
@@ -14,7 +14,7 @@ interface CharacterFactory {
     fun createCharacter(characterType: CharacterType): Character
 }
 
-object NormalCharacterFactory : CharacterFactory {
+object BaseCharacterFactory : CharacterFactory {
     override fun createCharacter(characterType: CharacterType): Character {
         return when (characterType) {
             CharacterType.NORMAL -> NormalCharacter()
@@ -27,9 +27,16 @@ object NormalCharacterFactory : CharacterFactory {
 }
 
 abstract class Character : GameObject() {
-    protected lateinit var characterProperty: CharacterProperty
-    private val weaponList: List<Weapon> = ArrayList<Weapon>()
-    private val powerUpList: List<PowerUp> = ArrayList<PowerUp>()
+    abstract var characterProperty: CharacterProperty
+    private val weaponList = ArrayList<BaseWeapon>()
+    private val powerUpLists = ArrayList<BasePowerUp>()
+
+    protected fun showCharacterInfo(infoTitle: String) {
+        println("-------$infoTitle------")
+        println("[${gameObjectData.name}] : $characterProperty")
+        println("weapons : ${weaponList.map { it.gameObjectData.name }}")
+        println("powerUps : ${powerUpLists.map { it.gameObjectData.name }}")
+    }
 
     fun attack() {
         weaponList.forEach {
@@ -37,11 +44,21 @@ abstract class Character : GameObject() {
         }
     }
 
-    init {
-        println("${gameObjectData.name} created")
-        println("status : ${characterProperty.toString()}")
-        println("weapons : ${weaponList}")
-        println("powerUps : ${powerUpList}")
+    fun addWeapon(weapon: BaseWeapon) {
+        weaponList.add(weapon)
+        showCharacterInfo("${weapon.javaClass.simpleName} added")
+    }
+
+    fun removeWeapon(weapon: BaseWeapon) {
+        weaponList.remove(weapon)
+    }
+
+    fun addPowerUp(powerUp: BasePowerUp) {
+        powerUpLists.add(powerUp)
+    }
+
+    fun removePowerUp(powerUp: BasePowerUp) {
+        powerUpLists.remove(powerUp)
     }
 }
 
@@ -55,17 +72,18 @@ data class CharacterProperty constructor(
 )
 
 class NormalCharacter : Character() {
+    override var characterProperty = CharacterProperty(0, 0, 0, 0, 0, 0)
 
     init {
-        this.characterProperty = CharacterProperty(0, 0, 0, 0, 0, 0)
+        showCharacterInfo("${this.javaClass.simpleName} created")
     }
-
 }
 
 class VampireCharacter : Character(), SystemObjectDataReceiver {
+    override var characterProperty = CharacterProperty(10, 10, 10, 10, 10, 10)
 
     init {
-        characterProperty = CharacterProperty(10, 10, 10, 10, 10, 10)
+        showCharacterInfo("${this.javaClass.simpleName} created")
     }
 
     override fun receiveDayOrNight(dayOrNight: DayNight) {
