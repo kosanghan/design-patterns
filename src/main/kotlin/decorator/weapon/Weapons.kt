@@ -1,7 +1,9 @@
 package decorator.weapon
 
+import decorator.common.AttackProperty
+
 class Knife : BaseWeapon() {
-    override var baseWeaponProperty = BaseWeaponProperty(10, 50, 50, 10, 2, 50)
+    override var baseWeaponAttackProperty = AttackProperty(10, 50, 50, 10, 2, 50)
 
     init {
         setAttackStrategy(ProjectileAttackStrategy())
@@ -9,7 +11,7 @@ class Knife : BaseWeapon() {
 }
 
 class Garlic : BaseWeapon() {
-    override var baseWeaponProperty = BaseWeaponProperty(5, 50, 50, 10, 0, 0)
+    override var baseWeaponAttackProperty = AttackProperty(5, 50, 50, 10, 0, 0)
 
     init {
         setAttackStrategy(NonProjectileAttackStrategy())

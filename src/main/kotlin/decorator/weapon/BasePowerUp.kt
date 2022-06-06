@@ -1,10 +1,11 @@
 package decorator.weapon
 
 import decorator.GameObject
+import decorator.common.AttackProperty
 
 abstract class BasePowerUp : GameObject() {
 
-    abstract val powerUpProperty: BasePowerUpProperty
+    abstract val powerUpAttackProperty: AttackProperty
 
     fun plusDamage() {
 
@@ -30,12 +31,3 @@ abstract class BasePowerUp : GameObject() {
 
     }
 }
-
-data class BasePowerUpProperty constructor(
-    var damage: Int,
-    var range: Int,
-    var duration: Int,
-    var cooltime: Int,
-    var projectileCount: Int,
-    var projectileSpeed: Int
-)

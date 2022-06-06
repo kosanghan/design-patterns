@@ -1,21 +1,26 @@
 package decorator
 
-import decorator.system.SystemObjectDataReceiver
-import util.DayNight
+interface SystemObjectDataReceiverPull {
+    fun receiveDayOrNight()
+}
 
 abstract class GameObject {
 
     var gameObjectData: GameObjectData = GameObjectData(this.javaClass.simpleName)
 
     private lateinit var interactStrategy: InteractStrategy
-    private lateinit var systemObjectDataReceiver: SystemObjectDataReceiver
+    private lateinit var systemObjectDataReceiver: SystemObjectDataReceiverPull
 
     fun setInterfaceStrategy(interactStrategy: InteractStrategy) {
         this.interactStrategy = interactStrategy
     }
 
-    fun setSystemObjectDataReceiver(systemObjectDataReceiver: SystemObjectDataReceiver) {
+    fun setSystemObjectDataReceiver(systemObjectDataReceiver: SystemObjectDataReceiverPull) {
         this.systemObjectDataReceiver = systemObjectDataReceiver
+    }
+
+    fun getSystemObjectDataReceiver(): SystemObjectDataReceiverPull {
+        return systemObjectDataReceiver
     }
 
     fun performInteract() {
@@ -26,9 +31,9 @@ abstract class GameObject {
         }
     }
 
-    fun performSystemDataReceive(dayOrNight: DayNight) {
+    fun performSystemDataReceive() {
         try {
-            systemObjectDataReceiver.receiveDayOrNight(dayOrNight)
+            systemObjectDataReceiver.receiveDayOrNight()
         } catch (e: UninitializedPropertyAccessException) {
             println("this object does not have system object data receiver")
         }

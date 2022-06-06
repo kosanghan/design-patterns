@@ -1,21 +1,24 @@
 package decorator.character
 
-import decorator.AttackInteractStrategy
-import decorator.GameObject
-import decorator.TalkInteractStrategy
-import decorator.system.SystemObjectDataReceiver
+import observer.SystemObject
+import observer.SystemObjectDataReceiverPull
 import util.DayNight
 
-class VampireNPC : GameObject(), SystemObjectDataReceiver {
+class VampireNPC() : observer.GameObject(), SystemObjectDataReceiverPull {
+
+    private lateinit var systemObject: SystemObject
+
+    constructor(systemObject: SystemObject) : this() {
+        this.systemObject = systemObject
+    }
+
     init {
-        setSystemObjectDataReceiver(this)
+        setSystemObjectDataReceiverPull(this)
     }
 
-    override fun receiveDayOrNight(dayOrNight: DayNight) {
-        setInterfaceStrategy(if (dayOrNight == DayNight.DAY) TalkInteractStrategy() else AttackInteractStrategy())
+    override fun receiveDayOrNight() {
+        setInterfaceStrategy(if (systemObject.getDayOrNight() == DayNight.DAY) observer.TalkInteractStrategy() else observer.AttackInteractStrategy())
     }
 }
 
-class OtherNPC : GameObject() {
-
-}
+class OtherNPC : observer.GameObject()
