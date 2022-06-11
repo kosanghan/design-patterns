@@ -1,9 +1,8 @@
 package decorator.weapon
 
-import decorator.GameObject
 import decorator.common.AttackProperty
 
-abstract class BaseWeapon : GameObject() {
+abstract class BaseWeapon : AttackDecorator() {
     abstract var baseWeaponAttackProperty: AttackProperty
     private lateinit var attackStrategy: AttackStrategy
 
@@ -11,10 +10,14 @@ abstract class BaseWeapon : GameObject() {
         this.attackStrategy = attackStrategy
     }
 
-    fun performAttack(characterAttackProperty: AttackProperty) {
+    fun getAttackStrategy(): AttackStrategy {
+        return attackStrategy
+    }
+
+    fun performAttack(attackDecorator: AttackDecorator) {
         try {
             println("-------Attack-------")
-            attackStrategy.attack(this, characterAttackProperty)
+            attackStrategy.attack(attackDecorator)
         } catch (e: UninitializedPropertyAccessException) {
             println("you cannot interface with this object")
         }
@@ -22,19 +25,19 @@ abstract class BaseWeapon : GameObject() {
 }
 
 interface AttackStrategy {
-    fun attack(weapon: BaseWeapon, characterAttackProperty: AttackProperty)
+    fun attack(attackDecorator: AttackDecorator)
 }
 
 class ProjectileAttackStrategy : AttackStrategy {
-    override fun attack(weapon: BaseWeapon, characterAttackProperty: AttackProperty) {
-        val sumOfAttackProperty = weapon.baseWeaponAttackProperty + characterAttackProperty
-        println("fire ${weapon.gameObjectData.name} $sumOfAttackProperty")
+    override fun attack(attackDecorator: AttackDecorator) {
+        println("fire ${attackDecorator.description}")
+        println(attackDecorator.getAttackProperty())
     }
 }
 
 class NonProjectileAttackStrategy : AttackStrategy {
-    override fun attack(weapon: BaseWeapon, characterAttackProperty: AttackProperty) {
-        val sumOfAttackProperty = weapon.baseWeaponAttackProperty + characterAttackProperty
-        println("${weapon.gameObjectData.name} activated $sumOfAttackProperty")
+    override fun attack(attackDecorator: AttackDecorator) {
+        println("${attackDecorator.description} activated")
+        println(attackDecorator.getAttackProperty())
     }
 }

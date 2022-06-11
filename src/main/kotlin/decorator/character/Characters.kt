@@ -6,7 +6,7 @@ import decorator.system.SystemObject
 import util.DayNight
 
 class NormalBaseCharacter() : BaseCharacter() {
-    override var characterAttackProperty = AttackProperty(0, 0, 0, 0, 0, 0)
+    var characterAttackProperty = AttackProperty(0, 0, 0, 0, 0, 0)
     private lateinit var systemObject: SystemObject
 
     constructor(systemObject: SystemObject) : this() {
@@ -16,10 +16,14 @@ class NormalBaseCharacter() : BaseCharacter() {
     init {
         showCharacterInfo("${this.javaClass.simpleName} created")
     }
+
+    override fun getAttackProperty(): AttackProperty {
+        return characterAttackProperty
+    }
 }
 
 class VampireBaseCharacter() : BaseCharacter(), SystemObjectDataReceiverPull {
-    override var characterAttackProperty = AttackProperty(10, 10, 10, 10, 10, 10)
+    var characterAttackProperty = AttackProperty(10, 10, 10, 10, 10, 10)
     private lateinit var systemObject: SystemObject
 
     constructor(systemObject: SystemObject) : this() {
@@ -39,5 +43,9 @@ class VampireBaseCharacter() : BaseCharacter(), SystemObjectDataReceiverPull {
             println("Vampire has been strong")
             AttackProperty(10, 10, 10, 10, 10, 10)
         }
+    }
+
+    override fun getAttackProperty(): AttackProperty {
+        return characterAttackProperty
     }
 }

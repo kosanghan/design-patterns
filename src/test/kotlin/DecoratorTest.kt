@@ -2,6 +2,8 @@ import decorator.character.BaseCharacterFactory
 import decorator.character.CharacterType
 import decorator.character.VampireBaseCharacter
 import decorator.system.SystemObject
+import decorator.weapon.BaseWeapon
+import decorator.weapon.DamageUp
 import decorator.weapon.Garlic
 import decorator.weapon.Knife
 import org.junit.Test
@@ -16,6 +18,8 @@ class DecoratorTest {
 
         vampireChar.addWeapon(Knife())
         vampireChar.addWeapon(Garlic())
+
+        vampireChar.addPowerUp(DamageUp())
 
         vampireChar.attack()
 

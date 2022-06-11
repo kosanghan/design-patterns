@@ -1,8 +1,8 @@
 package decorator.character
 
 import decorator.GameObject
-import decorator.common.AttackProperty
 import decorator.system.SystemObject
+import decorator.weapon.AttackDecorator
 import decorator.weapon.BasePowerUp
 import decorator.weapon.BaseWeapon
 
@@ -37,21 +37,18 @@ object BaseCharacterFactory : CharacterFactory {
     }
 }
 
-abstract class BaseCharacter : GameObject() {
-    abstract var characterAttackProperty: AttackProperty
+abstract class BaseCharacter : AttackDecorator() {
     private val weaponList = ArrayList<BaseWeapon>()
     private val powerUpList = ArrayList<BasePowerUp>()
 
     protected fun showCharacterInfo(infoTitle: String) {
         println("-------$infoTitle------")
-        println("[${gameObjectData.name}] : $characterAttackProperty")
         println("weapons : ${weaponList.map { it.gameObjectData.name }}")
-        println("powerUps : ${powerUpList.map { it.gameObjectData.name }}")
     }
 
     fun attack() {
         weaponList.forEach {
-            it.performAttack(characterAttackProperty)
+            it.performAttack(this)
         }
     }
 
@@ -66,6 +63,10 @@ abstract class BaseCharacter : GameObject() {
 
     fun addPowerUp(powerUp: BasePowerUp) {
         powerUpList.add(powerUp)
+        weaponList.forEach {
+            powerUp.setBaseWeapon(it)
+        }
+        showCharacterInfo("${powerUp.javaClass.simpleName} added")
     }
 
     fun removePowerUp(powerUp: BasePowerUp) {
