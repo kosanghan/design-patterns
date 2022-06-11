@@ -1,5 +1,6 @@
 package decorator.weapon
 
+import decorator.common.AttackDecorator
 import decorator.common.AttackProperty
 
 abstract class BaseWeapon : AttackDecorator() {
@@ -14,10 +15,10 @@ abstract class BaseWeapon : AttackDecorator() {
         return attackStrategy
     }
 
-    fun performAttack(attackDecorator: AttackDecorator) {
+    fun performAttack(baseCharacterAttackProperty: AttackProperty, powerUpList: ArrayList<BasePowerUp>) {
         try {
             println("-------Attack-------")
-            attackStrategy.attack(attackDecorator)
+            attackStrategy.attack(baseCharacterAttackProperty,powerUpList)
         } catch (e: UninitializedPropertyAccessException) {
             println("you cannot interface with this object")
         }
@@ -25,18 +26,18 @@ abstract class BaseWeapon : AttackDecorator() {
 }
 
 interface AttackStrategy {
-    fun attack(attackDecorator: AttackDecorator)
+    fun attack(baseCharacterAttackProperty: AttackProperty, powerUpList: ArrayList<BasePowerUp>)
 }
 
 class ProjectileAttackStrategy : AttackStrategy {
-    override fun attack(attackDecorator: AttackDecorator) {
+    override fun attack(baseCharacterAttackProperty: AttackProperty, powerUpList: ArrayList<BasePowerUp>) {
         println("fire ${attackDecorator.description}")
         println(attackDecorator.getAttackProperty())
     }
 }
 
 class NonProjectileAttackStrategy : AttackStrategy {
-    override fun attack(attackDecorator: AttackDecorator) {
+    override fun attack(baseCharacterAttackProperty: AttackProperty, powerUpList: ArrayList<BasePowerUp>) {
         println("${attackDecorator.description} activated")
         println(attackDecorator.getAttackProperty())
     }

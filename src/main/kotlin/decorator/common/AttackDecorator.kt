@@ -1,7 +1,6 @@
-package decorator.weapon
+package decorator.common
 
 import decorator.GameObject
-import decorator.common.AttackProperty
 
 abstract class AttackDecorator : GameObject() {
     lateinit var description: String

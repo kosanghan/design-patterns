@@ -1,8 +1,8 @@
 package decorator.character
 
 import decorator.GameObject
+import decorator.common.AttackProperty
 import decorator.system.SystemObject
-import decorator.weapon.AttackDecorator
 import decorator.weapon.BasePowerUp
 import decorator.weapon.BaseWeapon
 
@@ -18,8 +18,8 @@ interface CharacterFactory {
 object BaseCharacterFactory : CharacterFactory {
     override fun createCharacter(characterType: CharacterType): GameObject {
         return when (characterType) {
-            CharacterType.NORMAL -> NormalBaseCharacter()
-            CharacterType.VAMPIRE -> VampireBaseCharacter()
+            CharacterType.NORMAL -> NormalCharacter()
+            CharacterType.VAMPIRE -> VampireCharacter()
             else -> {
                 throw Exception("$characterType not yet implemented")
             }
@@ -28,8 +28,8 @@ object BaseCharacterFactory : CharacterFactory {
 
     override fun createCharacter(characterType: CharacterType, systemObject: SystemObject): GameObject {
         return when (characterType) {
-            CharacterType.NORMAL -> NormalBaseCharacter(systemObject)
-            CharacterType.VAMPIRE -> VampireBaseCharacter(systemObject)
+            CharacterType.NORMAL -> NormalCharacter(systemObject)
+            CharacterType.VAMPIRE -> VampireCharacter(systemObject)
             else -> {
                 throw Exception("$characterType not yet implemented")
             }
@@ -37,24 +37,19 @@ object BaseCharacterFactory : CharacterFactory {
     }
 }
 
-abstract class BaseCharacter : AttackDecorator() {
+abstract class BaseCharacter : GameObject() {
+    abstract var baseCharacterAttackProperty: AttackProperty
     private val weaponList = ArrayList<BaseWeapon>()
     private val powerUpList = ArrayList<BasePowerUp>()
 
-    protected fun showCharacterInfo(infoTitle: String) {
-        println("-------$infoTitle------")
-        println("weapons : ${weaponList.map { it.gameObjectData.name }}")
-    }
-
     fun attack() {
         weaponList.forEach {
-            it.performAttack(this)
+            it.performAttack(baseCharacterAttackProperty, powerUpList)
         }
     }
 
     fun addWeapon(weapon: BaseWeapon) {
         weaponList.add(weapon)
-        showCharacterInfo("${weapon.javaClass.simpleName} added")
     }
 
     fun removeWeapon(weapon: BaseWeapon) {
@@ -63,10 +58,6 @@ abstract class BaseCharacter : AttackDecorator() {
 
     fun addPowerUp(powerUp: BasePowerUp) {
         powerUpList.add(powerUp)
-        weaponList.forEach {
-            powerUp.setBaseWeapon(it)
-        }
-        showCharacterInfo("${powerUp.javaClass.simpleName} added")
     }
 
     fun removePowerUp(powerUp: BasePowerUp) {

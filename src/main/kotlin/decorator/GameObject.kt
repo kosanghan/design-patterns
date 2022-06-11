@@ -6,7 +6,7 @@ interface SystemObjectDataReceiverPull {
 
 abstract class GameObject {
 
-    var gameObjectData: GameObjectData = GameObjectData(this.javaClass.simpleName)
+    abstract var gameObjectData: GameObjectData
 
     private lateinit var interactStrategy: InteractStrategy
     private lateinit var systemObjectDataReceiver: SystemObjectDataReceiverPull
@@ -46,18 +46,18 @@ interface InteractStrategy {
 
 class TalkInteractStrategy : InteractStrategy {
     override fun interact(gameObjectData: GameObjectData) {
-        println("[${gameObjectData.name}]:\"Nice to meet you!\"")
+        println("[${gameObjectData.type}]:\"Nice to meet you!\"")
     }
 }
 
 class AttackInteractStrategy : InteractStrategy {
     override fun interact(gameObjectData: GameObjectData) {
-        println("you attacked by [${gameObjectData.name}]")
+        println("you attacked by [${gameObjectData.type}]")
     }
 }
 
 class ObtainInteractStrategy : InteractStrategy {
     override fun interact(gameObjectData: GameObjectData) {
-        println("you obtained [${gameObjectData.name}]")
+        println("you obtained [${gameObjectData.type}]")
     }
 }
